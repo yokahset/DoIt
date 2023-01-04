@@ -6,7 +6,7 @@ import lazySizes from 'lazysizes'
 const Tablesort = require('tablesort')
 // const autocomplete = require('autocomplete.js')
 
-function escape (unsafe) {
+function escape(unsafe) {
   return unsafe.replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
@@ -14,16 +14,16 @@ function escape (unsafe) {
     .replace(/'/g, '&#039;')
 }
 
-function forEach (elements, handler) {
+function forEach(elements, handler) {
   elements = elements || []
   for (let i = 0; i < elements.length; i++) handler(elements[i])
 }
 
-function getScrollTop () {
+function getScrollTop() {
   return (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop
 }
 
-function isMobileWindow () {
+function isMobileWindow() {
   return window.matchMedia('only screen and (max-width: 680px)').matches
 }
 
@@ -34,7 +34,7 @@ function isMobileWindow () {
  * @param {boolean} reserved Whether to execute the callback after the animation is ended.
  * @param {function} callback The callback gets exectued after the element is animated.
  */
-function animateCSS (element, animation, reserved, callback) {
+function animateCSS(element, animation, reserved, callback) {
   if (!Array.isArray(animation)) animation = [animation]
   element.classList.add('animate__animated', ...animation)
   const handler = () => {
@@ -47,7 +47,7 @@ function animateCSS (element, animation, reserved, callback) {
 /**
  * Fetch and initialize all SVG icons.
  */
-function initSVGIcon () {
+function initSVGIcon() {
   Array.from(document.querySelectorAll('[data-svg-src]')).forEach(icon => {
     fetch(icon.getAttribute('data-svg-src'))
       .then(response => response.text())
@@ -67,7 +67,7 @@ function initSVGIcon () {
 /**
  * Initialize the mobile menu bar.
  */
-function initMenuMobile () {
+function initMenuMobile() {
   const menuToggleMobile = document.getElementById('menu-toggle-mobile')
   const menuMobile = document.getElementById('menu-mobile')
   // If no event listener has been registered yet, add one.
@@ -91,7 +91,7 @@ function initMenuMobile () {
  * Set the color theme
  * @param {string} theme
  */
-function setColorTheme (theme) {
+function setColorTheme(theme) {
   // set body attribute for CSS selector
   document.body.setAttribute('theme', theme)
   // set root color scheme
@@ -106,7 +106,7 @@ function setColorTheme (theme) {
 /**
  * Initialize the switch theme button.
  */
-function initSwitchTheme () {
+function initSwitchTheme() {
   Array.from(document.getElementsByClassName('theme-switch')).forEach(themeSwitch => {
     themeSwitch.addEventListener('click', () => {
       const currentTheme = document.body.getAttribute('theme')
@@ -125,7 +125,7 @@ function initSwitchTheme () {
 /**
  * Initialize the select theme button.
  */
-function initSelectTheme () {
+function initSelectTheme() {
   Array.from(document.getElementsByClassName('color-theme-select')).forEach(themeSelect => {
     // Get the current theme
     const currentTheme = document.body.getAttribute('theme')
@@ -159,7 +159,7 @@ function initSelectTheme () {
  * Initialize the search box.
  * @returns {null}
  */
-function initSearch () {
+function initSearch() {
   const searchConfig = window.config.search
   const isMobile = window.matchMedia && window.matchMedia('only screen and (max-width: 680px)').matches
   // If there is no search config
@@ -434,21 +434,21 @@ function initSearch () {
         footer: () => {
           const { searchType, icon, href } = searchConfig.type === 'algolia'
             ? {
-                searchType: 'algolia',
-                icon: '<i class="fab fa-algolia fa-fw"></i>',
-                href: 'https://www.algolia.com/'
-              }
+              searchType: 'algolia',
+              icon: '<i class="fab fa-algolia fa-fw"></i>',
+              href: 'https://www.algolia.com/'
+            }
             : (searchConfig.type === 'lunr'
-                ? {
-                    searchType: 'Lunr.js',
-                    icon: '',
-                    href: 'https://lunrjs.com/'
-                  }
-                : {
-                    searchType: 'Fuse.js',
-                    icon: '',
-                    href: 'https://fusejs.io/'
-                  })
+              ? {
+                searchType: 'Lunr.js',
+                icon: '',
+                href: 'https://lunrjs.com/'
+              }
+              : {
+                searchType: 'Fuse.js',
+                icon: '',
+                href: 'https://fusejs.io/'
+              })
           return `<div class="search-footer">Search by <a href="${href}" rel="noopener noreffer" target="_blank">${icon} ${searchType}</a></div>`
         }
       }
@@ -481,7 +481,7 @@ function initSearch () {
   } else initAutosearch()
 }
 
-function initDetails () {
+function initDetails() {
   forEach(document.getElementsByClassName('details'), $details => {
     const $summary = $details.getElementsByClassName('details-summary')[0]
     $summary.addEventListener('click', () => {
@@ -496,89 +496,85 @@ function initDetails () {
   })
 }
 
-function initLightGallery () {
+function initLightGallery() {
   if (window.config.lightGallery) {
     lightGallery(document.getElementById('content'), window.config.lightGallery)
   }
 }
 
-function initHighlight () {
-  forEach(document.querySelectorAll('.highlight > pre.chroma'), $preChroma => {
-    const $chroma = document.createElement('div')
-    $chroma.className = $preChroma.className
-    const $table = document.createElement('table')
-    $chroma.appendChild($table)
-    const $tbody = document.createElement('tbody')
-    $table.appendChild($tbody)
-    const $tr = document.createElement('tr')
-    $tbody.appendChild($tr)
-    const $td = document.createElement('td')
-    $tr.appendChild($td)
-    $preChroma.parentElement.replaceChild($chroma, $preChroma)
-    $td.appendChild($preChroma)
-  })
-  forEach(document.querySelectorAll('.highlight > .chroma'), $chroma => {
-    const $codeElements = $chroma.querySelectorAll('pre.chroma > code')
-    if ($codeElements.length) {
-      const $code = $codeElements[$codeElements.length - 1]
-      const $header = document.createElement('div')
-      $header.className = 'code-header ' + $code.className.toLowerCase()
-      const $title = document.createElement('span')
-      $title.classList.add('code-title')
-      $title.insertAdjacentHTML('afterbegin', '<i class="arrow fas fa-chevron-right fa-fw"></i>')
-      $title.addEventListener('click', () => {
-        const content = $chroma.getElementsByClassName('table-wrapper')[0]
-        if ($chroma.classList.contains('open')) {
-          content.style.maxHeight = null
-        } else {
-          content.style.maxHeight = content.scrollHeight + 'px'
-        }
-        $chroma.classList.toggle('open')
-      }, false)
-      $header.appendChild($title)
-      const $ellipses = document.createElement('span')
-      $ellipses.insertAdjacentHTML('afterbegin', '<i class="fas fa-ellipsis-h fa-fw"></i>')
-      $ellipses.classList.add('ellipses')
-      $ellipses.addEventListener('click', () => {
-        $chroma.classList.add('open')
-      }, false)
-      $header.appendChild($ellipses)
-      const $copy = document.createElement('span')
-      $copy.insertAdjacentHTML('afterbegin', '<i class="far fa-copy fa-fw"></i>')
-      $copy.classList.add('copy')
-      const code = $code.innerText
-      if (window.config.code.maxShownLines < 0 || code.split('\n').length < window.config.code.maxShownLines + 2) $chroma.classList.add('open')
-      if (window.config.code.copyTitle) {
-        $copy.setAttribute('data-clipboard-text', code)
-        $copy.title = window.config.code.copyTitle
-        const clipboard = new ClipboardJS($copy)
-        clipboard.on('success', _e => {
-          animateCSS($code, 'animate__flash')
-          $copy.firstElementChild.className = 'fas fa-check fa-fw'
-          setTimeout(() => {
-            $copy.firstElementChild.className = 'far fa-copy fa-fw'
-          }, 3000)
-        })
-        $header.appendChild($copy)
-      }
-      $chroma.insertBefore($header, $chroma.firstChild)
-    }
-  })
+function initHighlight() {
+  // forEach(document.querySelectorAll('.highlight > pre.chroma'), $preChroma => {
+  //   const $chroma = document.createElement('div')
+  //   $chroma.className = $preChroma.className
+  //   const $table = document.createElement('table')
+  //   $chroma.appendChild($table)
+  //   const $tbody = document.createElement('tbody')
+  //   $table.appendChild($tbody)
+  //   const $tr = document.createElement('tr')
+  //   $tbody.appendChild($tr)
+  //   const $td = document.createElement('td')
+  //   $tr.appendChild($td)
+  //   $preChroma.parentElement.replaceChild($chroma, $preChroma)
+  //   $td.appendChild($preChroma)
+  // })
+  // forEach(document.querySelectorAll('.highlight > .chroma'), $chroma => {
+  //   const $codeElements = $chroma.querySelectorAll('pre.chroma > code')
+  //   if ($codeElements.length) {
+  //     const $code = $codeElements[$codeElements.length - 1]
+  //     const $header = document.createElement('div')
+  //     $header.className = 'code-header ' + $code.className.toLowerCase()
+  //     const $title = document.createElement('span')
+  //     $title.classList.add('code-title')
+  //     $title.insertAdjacentHTML('afterbegin', '<i class="arrow fas fa-chevron-right fa-fw"></i>')
+  //     $title.addEventListener('click', () => {
+  //       const content = $chroma.getElementsByClassName('table-wrapper')[0]
+  //       if ($chroma.classList.contains('open')) {
+  //         content.style.maxHeight = null
+  //       } else {
+  //         content.style.maxHeight = content.scrollHeight + 'px'
+  //       }
+  //       $chroma.classList.toggle('open')
+  //     }, false)
+  //     $header.appendChild($title)
+  //     const $ellipses = document.createElement('span')
+  //     $ellipses.insertAdjacentHTML('afterbegin', '<i class="fas fa-ellipsis-h fa-fw"></i>')
+  //     $ellipses.classList.add('ellipses')
+  //     $ellipses.addEventListener('click', () => {
+  //       $chroma.classList.add('open')
+  //     }, false)
+  //     $header.appendChild($ellipses)
+  //     const $copy = document.createElement('span')
+  //     $copy.insertAdjacentHTML('afterbegin', '<i class="far fa-copy fa-fw"></i>')
+  //     $copy.classList.add('copy')
+  //     const code = $code.innerText
+  //     if (window.config.code.maxShownLines < 0 || code.split('\n').length < window.config.code.maxShownLines + 2) $chroma.classList.add('open')
+  //     if (window.config.code.copyTitle) {
+  //       $copy.setAttribute('data-clipboard-text', code)
+  //       $copy.title = window.config.code.copyTitle
+  //       const clipboard = new ClipboardJS($copy)
+  //       clipboard.on('success', _e => {
+  //         animateCSS($code, 'animate__flash')
+  //         $copy.firstElementChild.className = 'fas fa-check fa-fw'
+  //         setTimeout(() => {
+  //           $copy.firstElementChild.className = 'far fa-copy fa-fw'
+  //         }, 3000)
+  //       })
+  //       $header.appendChild($copy)
+  //     }
+  //     $chroma.insertBefore($header, $chroma.firstChild)
+  //   }
+  // })
 }
 
-function initTable () {
-  forEach(document.querySelectorAll('.content table'), $table => {
-    const $wrapper = document.createElement('div')
-    $wrapper.className = 'table-wrapper'
-    $table.parentElement.replaceChild($wrapper, $table)
-    $wrapper.appendChild($table)
-    if (window.config?.table?.sort) {
-      new Tablesort($table)
-    }
-  })
+function initTable() {
+  if (window.config?.table?.sort) {
+    Array.from(document.querySelectorAll('.content table:not(.lntable)')).forEach(table => {
+      new Tablesort(table)
+    })
+  }
 }
 
-function initToc () {
+function initToc() {
   const tocCore = document.getElementById('TableOfContents')
   // Return directly if no toc
   if (tocCore === null) return
@@ -664,7 +660,7 @@ function initToc () {
   }
 }
 
-function initMapbox () {
+function initMapbox() {
   if (window.config.mapbox) {
     mapboxgl.accessToken = window.config.mapbox.accessToken
     mapboxgl.setRTLTextPlugin(window.config.mapbox.RTLTextPlugin)
@@ -715,7 +711,7 @@ function initMapbox () {
   }
 }
 
-function initTypeit () {
+function initTypeit() {
   if (window.config.typeit) {
     const typeitConfig = window.config.typeit
     const speed = typeitConfig.speed ? typeitConfig.speed : 100
@@ -752,8 +748,8 @@ function initTypeit () {
   }
 }
 
-function initMeta () {
-  function getMeta (metaName) {
+function initMeta() {
+  function getMeta(metaName) {
     const metas = document.getElementsByTagName('meta')
     for (let i = 0; i < metas.length; i++) {
       if (metas[i].getAttribute('name') === metaName) {
@@ -774,7 +770,7 @@ function initMeta () {
   window._metaThemeColorOnSwitchTheme()
 }
 
-function onScroll () {
+function onScroll() {
   const $headers = []
   const $viewComments = document.getElementById('view-comments')
   if (document.body.getAttribute('header-desktop') === 'auto') $headers.push(document.getElementById('header-desktop'))
@@ -787,7 +783,7 @@ function onScroll () {
   }
   const $fixedButtons = document.getElementById('fixed-buttons')
   const ACCURACY = 20; const MINIMUM = 100
-  function handleScrollEvent () {
+  function handleScrollEvent() {
     window.newScrollTop = getScrollTop()
     const scroll = window.newScrollTop - window.oldScrollTop
     const isMobile = isMobileWindow()
@@ -825,7 +821,7 @@ function onScroll () {
   })
 }
 
-function onResize () {
+function onResize() {
   window.addEventListener('resize', () => {
     if (!window._resizeTimeout) {
       window._resizeTimeout = window.setTimeout(() => {
@@ -837,14 +833,14 @@ function onResize () {
   }, false)
 }
 
-function onClickMask () {
+function onClickMask() {
   document.getElementById('mask').addEventListener('click', () => {
     for (const event of window.clickMaskEventSet) event()
     document.body.classList.remove('blur')
   }, false)
 }
 
-function init () {
+function init() {
   window.isDark = document.body.getAttribute('theme') !== 'light'
   window.newScrollTop = getScrollTop()
   window.oldScrollTop = window.newScrollTop
@@ -860,9 +856,9 @@ function init () {
   initSelectTheme()
   initMeta()
   initSearch()
-  initDetails()
+  // initDetails()
   initLightGallery()
-  initHighlight()
+  // initHighlight()
   initTable()
   initTypeit()
   initMapbox()

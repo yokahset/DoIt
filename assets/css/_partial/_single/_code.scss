@@ -47,17 +47,6 @@ code, pre, .highlight table, .highlight tr, .highlight td {
 .highlight, .gist {
   font-family: $code-font-family;
   font-size: $code-font-size;
-
-  .table-wrapper {
-    > table,
-    > table thead,
-    > table tr,
-    > table td {
-      margin: 0;
-      padding: 0;
-      border: none !important;
-    }
-  }
 }
 
 .highlight {
@@ -174,12 +163,6 @@ code, pre, .highlight table, .highlight tr, .highlight td {
       }
     }
 
-    .table-wrapper {
-      max-height: 0;
-      overflow: auto hidden;
-      transition: max-height 0.5s ease-out;
-    }
-
     &.open {
       .code-header {
         background: darken($code-background-color, 3%);
@@ -190,10 +173,6 @@ code, pre, .highlight table, .highlight tr, .highlight td {
         [theme=black] & {
           background: darken($code-background-color-black, 3%);
         }
-      }
-      
-      .table-wrapper {
-        max-height: none;
       }
 
       .arrow {
