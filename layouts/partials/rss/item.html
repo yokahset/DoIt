@@ -25,15 +25,7 @@
             {{- if $.Site.Data.authors -}}
                 {{- with partial "function/author.html" (dict "name" $name "author" (index $.Site.Data.authors $name) "lang" $lang) -}}
                     <author>
-                        <name>{{- .name -}}</name>
-                        {{- if .absLink -}}
-                            <uri>{{ .absLink | absURL }}</uri>
-                        {{- else -}}
-                            <uri>{{ .link | absURL }}</uri>
-                        {{- end -}}
-                        {{- if .email -}}
-                            <email>{{ .email }}</email>
-                        {{- end -}}
+                        {{ .email }}
                     </author>
                 {{- end -}}
             {{- else -}}
